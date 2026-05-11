@@ -11,11 +11,11 @@ RUN apk --no-cache add binutils build-base git && \
     git clone --depth 1 --branch v${COREDNS_VERS} https://github.com/coredns/coredns.git
 
 # Copy local files - keep separate as they change frequently
-COPY --link . coredns-dockerdiscovery
+COPY --link . /go/coredns-dockerdiscovery
 
 # Combine configuration and build steps
 WORKDIR /go/coredns
-RUN cp ../coredns-dockerdiscovery/docker/plugin.cfg . && \
+RUN cp ../coredns-dockerdiscovery/plugin.cfg . && \
     go mod edit -replace github.com/kevinjqiu/coredns-dockerdiscovery=../coredns-dockerdiscovery && \
     go generate coredns.go && \
     go build -mod=mod -o=coredns && \
